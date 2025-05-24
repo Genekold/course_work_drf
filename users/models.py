@@ -11,26 +11,12 @@ class User(AbstractUser):
         unique=True, verbose_name="Почта", help_text="Укажите почту"
     )
 
-    phone = models.CharField(
-        max_length=35,
-        blank=True,
-        null=True,
-        verbose_name="Телефон",
-        help_text="Укажите телефон",
-    )
-    city = models.CharField(
+    tg_chat_id = models.CharField(
         max_length=50,
+        verbose_name="Чат ID в телеграмм",
+        help_text="Укажите чат ID в телеграмм",
         blank=True,
         null=True,
-        verbose_name="Город",
-        help_text="Укажите город",
-    )
-    avatar = models.ImageField(
-        upload_to="users/avatars",
-        blank=True,
-        null=True,
-        verbose_name="Аватат",
-        help_text="Загрузите аватар",
     )
 
     USERNAME_FIELD = "email"
@@ -39,5 +25,3 @@ class User(AbstractUser):
     class Meta:
         verbose_name = "пользователь"
         verbose_name_plural = "пользователи"
-
-
