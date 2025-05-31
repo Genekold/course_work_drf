@@ -74,7 +74,7 @@ class Habit(models.Model):
         help_text="Время необходимое для пыполнения привычки",
         validators=[MinValueValidator(10), MaxValueValidator(120)],
     )
-    is_published = models.BooleanField(
+    is_public = models.BooleanField(
         default=False,
         verbose_name="Признак публичности",
         help_text="Укажите можно ли показывать привычку в общий доступ.",

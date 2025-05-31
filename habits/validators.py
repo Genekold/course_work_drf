@@ -32,7 +32,7 @@ class ValidationRelatedHabit:
 
     def __call__(self, habit):
         related_habit = habit.get("related_habit")
-        if habit.get("related_habit").is_nice is False:
+        if related_habit and not related_habit.is_nice:
             raise ValidationError(
                 "В связанные привычки можно добавит только приятные привычки"
             )

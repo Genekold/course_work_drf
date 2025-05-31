@@ -5,3 +5,7 @@ psycopg2-binary==2.9.10
 djangorestframework_simplejwt==5.5.0
 pillow==11.2.1
 django-extensions==4.1
+requests==2.32.3
+celery==5.5.2
+eventlet==0.40.0
+redis==6.2.0

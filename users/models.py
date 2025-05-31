@@ -12,11 +12,10 @@ class User(AbstractUser):
     )
 
     tg_chat_id = models.CharField(
+        unique=True,
         max_length=50,
-        verbose_name="Чат ID в телеграмм",
-        help_text="Укажите чат ID в телеграмм",
-        blank=True,
-        null=True,
+        verbose_name="chat-id в телеграмм",
+        help_text="Укажите chat-id в телеграмм"
     )
 
     USERNAME_FIELD = "email"
