@@ -42,3 +42,4 @@ class HabitsViewSet(ModelViewSet):
 
         serializer = self.get_serializer(qs, many=True)
         return Response(serializer.data)
+#

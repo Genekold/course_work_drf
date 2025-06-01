@@ -1,5 +1,4 @@
-from django.core.validators import (MaxValueValidator, MinValueValidator,
-                                    ValidationError)
+from django.core.validators import (MaxValueValidator, MinValueValidator)
 from django.db import models
 
 from config import settings
@@ -24,6 +23,15 @@ class Habit(models.Model):
         related_name="habits",
         verbose_name="Автор привычки",
         help_text="Введите автора привычки",
+    )
+    created_at = models.DateField(
+        auto_now_add=True,
+        verbose_name="Дата создания"
+    )
+    next_execution = models.DateField(
+        blank=True,
+        null=True,
+        verbose_name="Дата следующего выполнения"
     )
     place = models.CharField(
         max_length=200,
