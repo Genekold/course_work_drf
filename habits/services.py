@@ -1,3 +1,4 @@
+from datetime import datetime
 from datetime import timedelta
 
 import requests
@@ -30,5 +31,26 @@ def get_habits_for_today():
 def set_next_date_execution(habits):
     """Устанавливает дату следующего выполнения."""
     now = timezone.now()
-    habits_1_day = habits.filter(periodicity="1DAY")
+    habits_1_day = habits.filter(periodicity="1_DAY")
     habits_1_day.update(next_execution=(now + timedelta(days=1)))
+    habits_1_day = habits.filter(periodicity="2_DAY")
+    habits_1_day.update(next_execution=(now + timedelta(days=2)))
+    habits_1_day = habits.filter(periodicity="3_DAY")
+    habits_1_day.update(next_execution=(now + timedelta(days=3)))
+    habits_1_day = habits.filter(periodicity="4_DAY")
+    habits_1_day.update(next_execution=(now + timedelta(days=4)))
+    habits_1_day = habits.filter(periodicity="5_DAY")
+    habits_1_day.update(next_execution=(now + timedelta(days=5)))
+    habits_1_day = habits.filter(periodicity="6_DAY")
+    habits_1_day.update(next_execution=(now + timedelta(days=6)))
+    habits_1_day = habits.filter(periodicity="7_DAY")
+    habits_1_day.update(next_execution=(now + timedelta(days=7)))
+
+
+def set_sending_time(time: str):
+    """Устанавливает время отправки сообщенияю."""
+
+    now_date = timezone.now().date()
+    date_str = f"{now_date} {time}"
+    send_date = datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S") - timedelta(minutes=5)
+    return send_date

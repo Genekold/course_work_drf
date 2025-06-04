@@ -5,7 +5,6 @@ class RewardAndRelatedHabit:
     """Валидация добавления к привычке Связанной привычки или Вознаграждения."""
 
     def __call__(self, habit):
-
         is_nice = habit.get("is_nice")
         reward = habit.get("reward")
         related_habit = habit.get("related_habit")
