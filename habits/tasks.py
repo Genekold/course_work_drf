@@ -8,6 +8,7 @@ from users.models import User
 def queue_send_message(chat_id, message):
     """Выполняет отправку уведомления"""
     send_telegram_message(chat_id, message)
+    print(chat_id, message)
 
 
 @shared_task()

@@ -16,3 +16,10 @@ class HabitSerializer(serializers.ModelSerializer):
             RewardAndRelatedHabit(),
             ValidationRelatedHabit(),
         ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for validator in self.validators:
+            if hasattr(validator, 'set_instance'):
+                validator.set_instance(self.instance)
