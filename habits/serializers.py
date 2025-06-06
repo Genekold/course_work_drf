@@ -2,12 +2,17 @@ from rest_framework import serializers
 
 from habits.models import Habit
 from habits.validators import RewardAndRelatedHabit, ValidationRelatedHabit
+from users.models import User
 
 
 class HabitSerializer(serializers.ModelSerializer):
     """Сериализатор привычки"""
 
-    owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    owner = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(),
+        required=False,
+        default=serializers.CurrentUserDefault()
+    )
 
     class Meta:
         model = Habit
