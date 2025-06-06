@@ -17,7 +17,7 @@ class RewardAndRelatedHabit:
         current_reward = getattr(instance, 'reward', None) if instance else None
         current_related_habit = getattr(instance, 'related_habit', None) if instance else None
 
-        # поля для проверки
+        # окончательные поля для проверки
         final_reward = reward if reward is not None else current_reward
         final_related_habit = related_habit if related_habit is not None else current_related_habit
 
