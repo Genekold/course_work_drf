@@ -8,18 +8,26 @@ class RewardAndRelatedHabit:
         self.instance = instance
 
     def __call__(self, habit):
-        instance = self.instance if hasattr(self, 'instance') else None
+        instance = self.instance if hasattr(self, "instance") else None
         reward = habit.get("reward")
         related_habit = habit.get("related_habit")
-        is_nice = habit.get("is_nice", getattr(instance, "is_nice", False)) if instance else habit.get("is_nice", False)
+        is_nice = (
+            habit.get("is_nice", getattr(instance, "is_nice", False))
+            if instance
+            else habit.get("is_nice", False)
+        )
 
         # если есть экземпляр определяем поля
-        current_reward = getattr(instance, 'reward', None) if instance else None
-        current_related_habit = getattr(instance, 'related_habit', None) if instance else None
+        current_reward = getattr(instance, "reward", None) if instance else None
+        current_related_habit = (
+            getattr(instance, "related_habit", None) if instance else None
+        )
 
         # окончательные поля для проверки
         final_reward = reward if reward is not None else current_reward
-        final_related_habit = related_habit if related_habit is not None else current_related_habit
+        final_related_habit = (
+            related_habit if related_habit is not None else current_related_habit
+        )
 
         if not is_nice and not final_reward and not final_related_habit:
             raise ValidationError(

@@ -15,7 +15,7 @@ class User(AbstractUser):
         unique=True,
         max_length=50,
         verbose_name="chat-id в телеграмм",
-        help_text="Укажите chat-id в телеграмм"
+        help_text="Укажите chat-id в телеграмм",
     )
 
     USERNAME_FIELD = "email"

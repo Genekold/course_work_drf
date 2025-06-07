@@ -1,5 +1,5 @@
 from rest_framework.decorators import action
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
@@ -14,7 +14,7 @@ class HabitsViewSet(ModelViewSet):
 
     serializer_class = HabitSerializer
     pagination_class = Pagination
-    permission_classes = [IsOwner,]
+    permission_classes = [IsAuthenticated, IsOwner]
 
     def get_queryset(self):
         # Собираем только привычки текущего пользователя
@@ -24,13 +24,14 @@ class HabitsViewSet(ModelViewSet):
         # Поле 'owner' заполняем авторизованым пользователем.
         serializer.save(owner=self.request.user)
 
-    @action(detail=False,
-            methods=["get"],
-            pagination_class=Pagination,
-            url_name="public-habit",
-            url_path="public-habit",
-            permission_classes=[AllowAny]
-            )
+    @action(
+        detail=False,
+        methods=["get"],
+        pagination_class=Pagination,
+        url_name="public-habit",
+        url_path="public-habit",
+        permission_classes=[AllowAny],
+    )
     def public(self, request):
         # Получение списка публичных привычек
 
@@ -42,4 +43,3 @@ class HabitsViewSet(ModelViewSet):
 
         serializer = self.get_serializer(qs, many=True)
         return Response(serializer.data)
-#
