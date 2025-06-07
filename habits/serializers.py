@@ -11,7 +11,7 @@ class HabitSerializer(serializers.ModelSerializer):
     owner = serializers.PrimaryKeyRelatedField(
         queryset=User.objects.all(),
         required=False,
-        default=serializers.CurrentUserDefault()
+        default=serializers.CurrentUserDefault(),
     )
 
     class Meta:
@@ -26,5 +26,5 @@ class HabitSerializer(serializers.ModelSerializer):
         super().__init__(*args, **kwargs)
 
         for validator in self.validators:
-            if hasattr(validator, 'set_instance'):
+            if hasattr(validator, "set_instance"):
                 validator.set_instance(self.instance)

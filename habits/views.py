@@ -24,13 +24,14 @@ class HabitsViewSet(ModelViewSet):
         # Поле 'owner' заполняем авторизованым пользователем.
         serializer.save(owner=self.request.user)
 
-    @action(detail=False,
-            methods=["get"],
-            pagination_class=Pagination,
-            url_name="public-habit",
-            url_path="public-habit",
-            permission_classes=[AllowAny]
-            )
+    @action(
+        detail=False,
+        methods=["get"],
+        pagination_class=Pagination,
+        url_name="public-habit",
+        url_path="public-habit",
+        permission_classes=[AllowAny],
+    )
     def public(self, request):
         # Получение списка публичных привычек
 
@@ -42,4 +43,3 @@ class HabitsViewSet(ModelViewSet):
 
         serializer = self.get_serializer(qs, many=True)
         return Response(serializer.data)
-#

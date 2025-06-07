@@ -32,9 +32,9 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt.token_blacklist",
     "habits",
     "django_extensions",
-    'django_celery_beat',
-    'drf_spectacular',
-    'corsheaders',
+    "django_celery_beat",
+    "drf_spectacular",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -76,7 +76,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 DATABASES = {
@@ -137,14 +137,14 @@ CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
-CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND"),
+CELERY_RESULT_BACKEND = (os.getenv("CELERY_RESULT_BACKEND"),)
 
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 CELERY_BEAT_SCHEDULE = {
-    'send_notification': {
-        'task': 'habits.tasks.send_notification',
-        'schedule': crontab(hour=0, minute=1),
+    "send_notification": {
+        "task": "habits.tasks.send_notification",
+        "schedule": crontab(hour=0, minute=1),
     },
 }
 CORS_ALLOWED_ORIGINS = [

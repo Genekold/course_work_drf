@@ -1,6 +1,11 @@
 from celery import shared_task
 
-from habits.services import get_habits_for_today, set_next_date_execution, set_sending_time, send_telegram_message
+from habits.services import (
+    get_habits_for_today,
+    set_next_date_execution,
+    set_sending_time,
+    send_telegram_message,
+)
 from users.models import User
 
 

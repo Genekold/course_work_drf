@@ -12,11 +12,13 @@ def send_telegram_message(chat_id, message):
     """Функция для отправки уведомления на телеграмм"""
 
     params = {
-        'text': message,
-        'chat_id': chat_id,
+        "text": message,
+        "chat_id": chat_id,
     }
 
-    requests.get(f'{settings.TELEGRAM_URL}{settings.TELEGRAM_TOKEN}/sendMessage', params=params)
+    requests.get(
+        f"{settings.TELEGRAM_URL}{settings.TELEGRAM_TOKEN}/sendMessage", params=params
+    )
 
 
 def get_habits_for_today():
@@ -48,7 +50,7 @@ def set_next_date_execution(habits):
 
 
 def set_sending_time(time: str):
-    """Устанавливает время отправки сообщенияю."""
+    """Устанавливает время отправки сообщения."""
 
     now_date = timezone.now().date()
     date_str = f"{now_date} {time}"
