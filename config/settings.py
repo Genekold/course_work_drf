@@ -15,6 +15,7 @@ DEBUG = os.getenv("DEBUG", False) == "True"
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
+    "51.250.44.120"
 ]
 INTERNAL_IPS = [
     "127.0.0.1",
