@@ -1,0 +1,118 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: habits_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $POSTGRES_DB -U $POSTGRES_USER" ]
+      interval: 30s
+      retries: 5
+      timeout: 10s
+    networks:
+      - habit-network
+
+  redis:
+    image: redis:8-alpine
+    container_name: habits_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - habit-network
+    volumes:
+      - redis_data:/data
+    env_file:
+      - .env
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: habits
+    env_file: .env
+    command:
+      sh -c "python manage.py collectstatic --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:8000"
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+    environment:
+      DB_HOST: db
+      DB_PORT: ${DB_PORT}
+    networks:
+      - habit-network
+    ports:
+      - "8000:8000"
+    expose:
+      - "8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  celery:
+    build: .
+    command: celery -A config worker --loglevel=info
+    env_file:
+      - .env
+    environment:
+      DB_HOST: db
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+    networks:
+      - habit-network
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  celery-beat:
+    build: .
+    command:
+      sh -c "sleep 10 &&
+        python manage.py migrate && 
+        celery -A config beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler"
+    env_file:
+      - .env
+    environment:
+      DB_HOST: db
+      CELERY_BROKER_URL: redis://redis:6379/0
+    networks:
+      - habit-network
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - static_volume:/app/staticfiles
+    networks:
+      - habit-network
+    depends_on:
+      - app
+
+networks:
+  habit-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  redis_data:
+  static_volume:
